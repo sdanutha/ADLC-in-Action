@@ -1,109 +1,109 @@
 # Game Example Scenario — Project Binding
 
-ไฟล์นี้เติมข้อกำหนดเฉพาะเกมให้ reusable `gfit-adlc-*` Skills ใช้ระหว่าง Hands-on เท่านั้น ข้อกำหนดเหล่านี้ไม่ใช่ส่วนหนึ่งของ ADLC Skill Core
+This file adds game rules to the reusable `gfit-adlc-*` Skills. Use these rules only for this Hands-on workshop. They are not part of the ADLC Skill Core.
 
-## How to use this binding
+## How to Use This Binding
 
-- อ่านไฟล์นี้ก่อนทำทุก Step ใน `README.md` ไฟล์นี้เป็นข้อกำหนดหลักสำหรับ stack, paths, acceptance cases, metrics และ local release ของ Game Example Scenario
-- ทำเฉพาะ Step ที่ผู้เรียนเลือกและหยุดที่ checkpoint ของ Step นั้น ห้ามทำสอง Intent ภายใน turn เดียว
-- เก็บ artifacts และหลักฐานของ Intent ก่อนหน้าไว้ รวมถึงผลที่ fail ห้ามเขียนทับเพื่อทำให้ผลดูผ่าน
-- การยืนยัน Intent และการอนุมัติ Spec/Plan เป็น lightweight Govern checkpoints ใช้ workflow เต็มของ `gfit-adlc-govern` ก่อน Deploy และหลัง Observe
-- คำสั่งให้เริ่ม Step อนุญาตเฉพาะงานของ Step นั้น ไม่ใช่การอนุมัติ artifact, revision หรือ release
-- บันทึก human decision จากคำตอบจริงของผู้เรียนเท่านั้น Agent ให้ recommendation ได้แต่ตัดสินใจแทนไม่ได้
+- Read this file before every Step in `README.md`. It defines the stack, paths, acceptance cases, measures, and local release for the game.
+- Do only the Step selected by the learner. Stop at its checkpoint. Do not work on two Intents in one turn.
+- Keep artifacts and evidence from earlier Intents, including failed results. Do not replace them to make the work look successful.
+- Intent confirmation and Spec or Plan approval are small Govern checkpoints. Use the full `gfit-adlc-govern` workflow before Deploy and after Observe.
+- A request to start a Step allows only the normal work for that Step. It does not approve an artifact, revision, or release.
+- Record a human decision only from the learner's real answer. The agent may give advice, but it must not decide for the human.
 
-## Creation and execution rules
+## Creation and Execution Rules
 
-- สร้าง application files เฉพาะ implementation Steps เท่านั้น ระหว่างสร้าง Spec/Plan ให้หยุดก่อนเขียน code
-- เมื่อเริ่ม implementation ให้ใช้ Python 3 ที่มีอยู่ในเครื่อง สร้าง `pyproject.toml` และ `uv.lock` โดยไม่สร้าง `.python-version` เพื่อล็อก minor version เก็บ dependency lock เดิมใน Step ต่อไป เว้นแต่มีเหตุผลที่บันทึกไว้
-- แยก game logic ออกจาก HTTP rendering เพื่อทดสอบได้ ใช้ injected randomness ใน tests
-- ใช้ random opaque session cookie และ server-side runtime state ห้ามเปิดเผยเลขลับผ่าน HTML, cookie, telemetry หรือ production test endpoint
-- จัดทำและบันทึกวิธีตั้งค่า `source=test` สำหรับ validation กับ smoke checks และ `source=real` สำหรับ observation ที่ไม่ชี้นำ ค่าเริ่มต้นเป็น test และ telemetry ต้องอยู่ในเครื่อง
-- ห้ามเปลี่ยน label ของ events เดิม เมื่อเปลี่ยน source หรือ version ให้เริ่ม session ใหม่
-- Map automated และ manual evidence กับ acceptance IDs ในไฟล์นี้ แก้ test ได้เมื่อมีเหตุผลจาก requirement ที่บันทึกไว้ ห้าม skip หรือลด assertion เพื่อสร้างผล green
-- Generated tests ไม่ใช่หลักฐานอิสระในตัวเอง ต้องบันทึก command, result และ manual checks ที่เกี่ยวข้องตามจริง
+- Create application files only during implementation Steps. Stop before code while you create the Spec and Plan.
+- Use the Python 3 version on the computer. Create `pyproject.toml` and `uv.lock`. Do not create `.python-version` to lock a minor version. Keep the same dependency lock in later Steps unless you record a reason to change it.
+- Keep game logic separate from HTTP rendering so tests can call it. Use controlled random values in tests.
+- Use a random opaque session cookie and server-side runtime state. Do not show the secret number in HTML, cookies, telemetry, or a production test endpoint.
+- Create and record a `source=test` setting for validation and smoke tests. Use `source=real` for observation without hints. The default is test, and telemetry must stay on the local computer.
+- Keep existing event labels. Start a new session when the source or version changes.
+- Map automated and manual evidence to the acceptance IDs in this file. Change a test only when a recorded requirement supports the change. Do not skip or weaken a check to get a passing result.
+- Generated tests are not independent proof by themselves. Record each real command, result, and related manual check.
 
-## Step reporting contract
+## Step Report
 
-จบแต่ละ Step ด้วย:
+End each Step with:
 
-- Step และ Skills ที่ใช้อยู่
-- ไฟล์ที่สร้างหรือแก้
-- คำสั่งและผลจริง หรือ `NOT RUN`
-- สิ่งที่ผู้เรียนต้องตรวจหรือตัดสินใจ
-- Step ถัดไปที่พร้อมทำ
+- The current Step and Skills
+- Files created or changed
+- Real commands and results, or `NOT RUN`
+- What the learner must check or decide
+- The next Step that is ready
 
-แยก technical validation ออกจาก outcome observation เสมอ
+Always keep technical validation separate from outcome observation.
 
-## Environment and outputs
+## Environment and Outputs
 
-- Python 3 or later โดยไม่ล็อก minor version, FastAPI, Jinja2, HTML/CSS, pytest และ uv
-- Entrypoint: `app.main:app`
+- Python 3 or later with no fixed minor version, FastAPI, Jinja2, HTML/CSS, pytest, and uv
+- Entry point: `app.main:app`
 - Test command: `uv run pytest -q`
 - Local release: `uv run uvicorn app.main:app --host 127.0.0.1 --port 8000`
-- Intent artifacts: `artifacts/intent-001/` และ `artifacts/intent-002/`
+- Intent artifacts: `artifacts/intent-001/` and `artifacts/intent-002/`
 - Runtime telemetry: `telemetry/events.jsonl`
-- Bind เฉพาะ loopback ไม่มี Node, custom JavaScript, database, LLM API, paid service, public hosting, remote deployment, remote push หรือ global configuration changes
+- Bind only to loopback. Do not use Node, custom JavaScript, a database, an LLM API, a paid service, public hosting, remote deployment, remote push, or global configuration changes.
 
-## Game contract
+## Game Contract
 
-- หน้าแรกมีคำอธิบายและปุ่มเริ่มเกม ภาษาไทย
-- สุ่มจำนวนเต็ม 1–100; ทายได้ 7 ครั้ง; ค่าซ้ำที่เป็นเลขถูกช่วงนับเป็นอีกครั้ง
-- คำตอบต่ำกว่าเลขลับแสดง “ต่ำไป”; สูงกว่าแสดง “สูงไป”; ถูกแสดงชนะ
-- ครั้งที่ 7 ถ้าถูกยังชนะ ถ้าผิดจึงแพ้; เฉลยเลขเมื่อจบเท่านั้น
-- ค่าว่าง ไม่ใช่จำนวนเต็ม หรือนอกช่วงถูกปฏิเสธโดยไม่ลดจำนวนครั้ง
-- หลังจบไม่รับการทายเพิ่ม ไม่แก้ผลลัพธ์ และไม่บันทึกจบซ้ำ
-- v1 ไม่มีปุ่มเล่นซ้ำในหน้าจบ แต่กลับหน้าแรกเพื่อเริ่มรอบใหม่ได้ เป็น baseline ที่มี friction
-- v2 เพิ่มปุ่มเล่นอีกครั้งหลังชนะหรือแพ้ เริ่มด้วย 7 ครั้งและเลขสุ่มใหม่ ไม่แสดงปุ่มระหว่างรอบ
-- Refresh หรือ redirect ไม่เพิ่มจำนวนทายและไม่เริ่มรอบเอง ใช้ POST แล้ว redirect ไป GET
-- เลขลับไม่อยู่ใน HTML, cookie หรือ telemetry ระหว่างเล่น; session ต่างกันไม่แชร์สถานะ
-- ไม่มีคะแนน ระดับความยาก leaderboard เสียง login หรือฐานข้อมูลในเส้นทางหลัก
+- The home page has a short guide and a `Start game` button. All user text is in English.
+- Pick a random whole number from 1 to 100. The player gets seven guesses. A repeated valid number uses another guess.
+- Show `Too low` for a guess below the secret number. Show `Too high` for a guess above it. Show a win when the guess is correct.
+- A correct seventh guess is a win. An incorrect seventh guess is a loss. Show the secret number only after the round ends.
+- Reject empty input, non-whole numbers, and numbers outside the range. Invalid input does not use a guess.
+- Do not accept another guess after the round ends. Do not change the result or record `round_completed` twice.
+- In v1, the end page has no `Play again` button. The player may return to the home page and start a new round. This is the baseline with extra effort.
+- In v2, add a `Play again` button after a win or loss. It starts a new round with seven guesses and a new random number. Do not show the button during a round.
+- A refresh or redirect must not use a guess or start a round. Use POST and then redirect to GET.
+- Do not put the secret number in HTML, cookies, or telemetry during play. Different sessions must not share state.
+- Do not add scores, difficulty levels, a leaderboard, sound, login, or a database to the main path.
 
-## Acceptance cases
+## Acceptance Cases
 
-| ID | กรณีที่ต้องพิสูจน์ |
+| ID | Proof needed |
 |---|---|
-| G01 | เริ่มรอบอยู่ในสถานะ playing และมี 7 ครั้ง |
-| G02 | ต่ำไป/สูงไปถูกต้อง และ valid guess ลดจำนวนครั้งหนึ่ง |
-| G03 | ทายถูกชนะ รวมถึงถูกครั้งที่ 7 |
-| G04 | ผิดครบ 7 ครั้งแพ้ |
-| G05 | input ผิดถูกปฏิเสธ จำนวนครั้งและ guess events ไม่เปลี่ยน |
-| G06 | จบแล้วไม่รับทายเพิ่มและไม่มี `round_completed` ซ้ำ |
-| G07 | สอง session แยกกันและเลขลับไม่รั่วก่อนจบ |
-| G08 | หน้าเว็บเริ่ม/ทาย/ผลจบใช้ได้จริง และ refresh ไม่ทำ action ซ้ำ |
-| G09 | event schema ถูกต้อง ใช้เวลา UTC และแยก version/source ได้ |
-| G10 | v1 จบแล้วไม่มีปุ่ม replay; กลับ home เริ่มรอบใหม่ได้ใน session เดิม |
-| R01 | v2 ชนะ/แพ้แล้ว replay ได้ โดย reset attempts/status/round_id |
-| R02 | replay รักษา session_id เพิ่ม round_index และ refresh ไม่เพิ่มรอบ |
-| R03 | v2 ไม่มี replay ระหว่างเล่น; G01–G09 ยังผ่าน และปรับ G10 เฉพาะส่วนที่เปลี่ยน |
+| G01 | A new round has `playing` status and seven guesses. |
+| G02 | `Too low` and `Too high` are correct. One valid guess uses one attempt. |
+| G03 | A correct guess wins, including a correct seventh guess. |
+| G04 | Seven incorrect guesses lose the round. |
+| G05 | Invalid input is rejected. It does not change attempts or guess events. |
+| G06 | A finished round accepts no more guesses and has only one `round_completed` event. |
+| G07 | Two sessions are separate, and the secret number does not leak before the end. |
+| G08 | The web start, guess, and end flows work. A refresh does not repeat an action. |
+| G09 | The event schema is correct, uses UTC time, and separates version and source. |
+| G10 | The v1 end page has no replay button. The same session can return home and start a new round. |
+| R01 | After a v2 win or loss, replay resets attempts, status, and round_id. |
+| R02 | Replay keeps session_id, raises round_index, and a refresh does not add a round. |
+| R03 | v2 has no replay during a round. G01–G09 still pass. Only the changed part of G10 is updated. |
 
-Tests คุมเลขลับผ่าน injected randomness หรือ fixture ห้ามสร้าง secret endpoint ในแอปจริง ผล PASS ต้องมาจากการรันจริง
+Tests control the secret number with injected randomness or a fixture. Do not add a secret test endpoint to the real application. A PASS result must come from a real test run.
 
-## Telemetry contract
+## Telemetry Contract
 
-แต่ละ JSONL event มี `event_id`, UTC ISO 8601 `timestamp`, opaque `session_id`, `round_id`, `round_index`, `version` (`v1`/`v2`), `source` (`real`/`test`) และ `event` (`round_started`/`guess_submitted`/`round_completed`)
+Each JSONL event has `event_id`, a UTC ISO 8601 `timestamp`, an opaque `session_id`, `round_id`, `round_index`, `version` (`v1` or `v2`), `source` (`real` or `test`), and `event` (`round_started`, `guess_submitted`, or `round_completed`).
 
-- `guess_submitted` มี `attempt` 1–7 และ `result` (`low`/`high`/`correct`)
-- `round_completed` มี `outcome` (`won`/`lost`) และ `attempts_used`
-- การทายครั้งสุดท้ายบันทึก `guess_submitted` ก่อน `round_completed`
-- ไม่เก็บเลขลับหรือ input ดิบที่ไม่จำเป็น
-- browser session หนึ่งใน version เดียวใช้ session_id เดิมเมื่อกลับ home หรือ replay
-- เปลี่ยน version หรือ restart จน state หายให้เริ่ม session ใหม่ ห้ามรวมข้อมูลข้ามช่วงโดยไม่ระบุ
+- `guess_submitted` has `attempt` from 1 to 7 and `result` (`low`, `high`, or `correct`).
+- `round_completed` has `outcome` (`won` or `lost`) and `attempts_used`.
+- For the last guess, record `guess_submitted` before `round_completed`.
+- Do not store the secret number or unneeded raw input.
+- One browser session in one version keeps the same session_id after a return home or replay.
+- Start a new session after a version change or a restart that clears state. Do not combine data from different periods without a clear label.
 
-## Intent metrics
+## Intent Measures
 
-**Intent 1:** ผู้เล่นใหม่เริ่มและจบรอบแรกได้ด้วยตัวเอง
+**Intent 1:** A new player can start and finish the first round without help.
 
-- Pilot target: อย่างน้อย 4 จาก 5 eligible sessions จบรอบแรกภายใน 5 นาที
-- Guardrails: ไม่มี observed blocking error และไม่เปิดเผยเลขลับก่อนจบ
+- Pilot target: At least 4 of 5 eligible sessions finish the first round within five minutes.
+- Guardrails: No observed blocking error, and no secret number shown before the end.
 
-**Intent 2:** ลด friction เพื่อให้ผู้เล่นสมัครใจเริ่มรอบที่สอง
+**Intent 2:** Reduce the effort needed for a player to choose a second round.
 
-- Intervention: ปุ่มเล่นอีกครั้งหลังจบ
-- Target: replay rate เพิ่มอย่างน้อย 15 percentage points จาก v1
-- Guardrails: completion rate ลดไม่เกิน 5 percentage points และไม่มี observed blocking error
+- Intervention: Add a `Play again` button after the round ends.
+- Target: The replay rate rises by at least 15 percentage points from v1.
+- Guardrails: The completion rate falls by no more than 5 percentage points, and there is no observed blocking error.
 
-**Completion rate:** session ที่จบรอบแรกภายใน 5 นาที ÷ session ที่เริ่มรอบแรกและมี follow-up ครบ 5 นาที
+**Completion rate:** Sessions that finish the first round within five minutes ÷ sessions that start the first round and have a full five-minute follow-up window.
 
-**Replay rate:** session ที่เริ่มรอบสองภายใน 5 นาทีหลังจบรอบแรก ÷ session ที่จบรอบแรกและมี follow-up ครบ 5 นาที
+**Replay rate:** Sessions that start a second round within five minutes after the first round ends ÷ sessions that finish the first round and have a full five-minute follow-up window.
 
-นับ session ไม่ใช่ events หรือจำนวนรอบ ตัวหารเป็นศูนย์ให้รายงาน N/A แยก test data จาก real data เสมอ Self-test หลาย session จากคนเดียวไม่ใช่ผู้เล่นอิสระหลายคน และ replay เป็น proxy ไม่ใช่หลักฐานโดยตรงว่าผู้เล่นสนุก หาก sample หรือ follow-up window ไม่พอให้รายงาน `INSUFFICIENT EVIDENCE` โดยไม่สร้างข้อมูลทดแทน
+Count sessions, not events or rounds. Report N/A when the denominator is zero. Keep test data separate from real data. Several self-test sessions from one person are not several independent players. Replay is a proxy. It does not prove that a player had fun. Report `INSUFFICIENT EVIDENCE` when the sample or follow-up window is too small. Do not create data to fill a gap.

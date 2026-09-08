@@ -1,200 +1,201 @@
 # ADLC in Action — Hands-on
 
-Branch `handson` คือ Workshop แบบ Step-by-step สำหรับเรียน ADLC ผ่านการสร้างเกม ผู้เข้าร่วมเริ่มจาก repository ที่มี Agent instructions, Skills และ Project Binding แต่ยังไม่มีตัวเกม
+The `handson` branch is a step-by-step workshop. You will learn ADLC by building a game. The repository starts with agent rules, Skills, and a Project Binding. It does not contain the finished game.
 
-สร้างเกมด้วย Coding Agent ที่คุณเลือก แล้วปรับเกมจากหลักฐาน ผ่าน Intent สองรอบ ใช้เวลาประมาณ 2–3 ชั่วโมง ไม่รวมติดตั้งเครื่องมือ
+Use any coding agent. Build the game, collect evidence, and improve it through two Intents. The workshop takes about two to three hours. Setup time is not included.
 
-**ผู้ทดลองคนแรกคือคุณ** โครงเริ่มต้นตั้งใจไม่มีเกมสำเร็จรูป Code, tests และ artifacts จะเกิดขึ้นเมื่อทำทีละ Step
+**You are the first tester.** Code, tests, and artifacts will appear as you complete each Step.
 
-## สิ่งที่จะได้เมื่อจบ
+## What You Will Build
 
-- Intent 1: เกมทายเลข 1–100 ที่เล่นจบหนึ่งรอบได้
-- Intent 2: เพิ่มปุ่ม “เล่นอีกครั้ง” และตรวจว่าการเริ่มรอบสองเพิ่มขึ้นหรือไม่
+- Intent 1: A number guessing game that a player can finish
+- Intent 2: A `Play again` button, followed by a check of second-round starts
 - Artifact chain: `intent → spec + plan → code + tests → validation → decision → release → observation → resolution`
 
 ```text
 Intent → Generate ↔ Validate → Govern → Deploy → Observe
   ↑                                                   |
-  └──────────────────── signal ใหม่ ─────────────────┘
+  └──────────────────── new signal ───────────────────┘
 ```
 
-Step เป็นเส้นทางการเรียน ไม่ใช่ pipeline บังคับของ ADLC ในงานจริง Generate กับ Validate ทำงานเป็น feedback loop และ Observe ส่ง signal กลับไปสร้าง Intent ใหม่ได้
+The Steps make the workshop easy to follow. Real ADLC work does not need to follow a fixed pipeline. Generate and Validate work in a feedback loop. Observe can send a signal into a new Intent.
 
-## ก่อนเริ่ม
+## Before You Start
 
-- ติดตั้ง [Git](https://git-scm.com/downloads), [uv](https://docs.astral.sh/uv/getting-started/installation/), Python 3 or later และ browser
-- เปิด repo ใน Coding Agent ที่อ่าน/เขียนไฟล์และรันคำสั่งในเครื่องได้
-- อ่าน [กติกา ADLC สำหรับ Agent](AGENTS.md) และ [Game Project Binding](game-profile.md)
-- ทุก Agent ใช้ project-local Skills ชุดเดียวกันใต้ `.agents/skills/gfit-adlc-*`; ไม่ต้องติดตั้ง skill pack แบบ global
-- หาก Agent ไม่ discover Skills อัตโนมัติ ให้ prompt ระบุ path ของ `SKILL.md` โดยตรง
+- Install [Git](https://git-scm.com/downloads), [uv](https://docs.astral.sh/uv/getting-started/installation/), Python 3 or later, and a web browser.
+- Open the repository in a coding agent that can read files, write files, and run local commands.
+- Read [the ADLC agent rules](AGENTS.md) and the [Game Project Binding](game-profile.md).
+- Every agent uses the same project Skills in `.agents/skills/gfit-adlc-*`. You do not need to install the Skill pack for all projects.
+- If the agent does not find the Skills, give it the full path to each `SKILL.md`.
 
-**คัดลอก prompt ของแต่ละ Step ทั้งก้อน** ทุก prompt ระบุ `AGENTS.md`, `game-profile.md` และ Skills ที่ต้องใช้ การพิมพ์ชื่อ Step อย่างเดียวไม่รับประกันว่า Agent จะโหลด binding ครบ
+**Copy the full prompt for each Step.** Each prompt names `AGENTS.md`, `game-profile.md`, and the Skills it needs. A short prompt such as `Do Step 3` may not load every required file.
 
-## Step 0 — ตรวจความพร้อม (5–10 นาที)
+## Step 0 — Check Your Setup (5–10 minutes)
 
 ```text
-ฉันเป็นผู้ทดลอง ADLC in Action ทำเฉพาะ Step 0 ของ README.md
-อ่าน AGENTS.md และ game-profile.md
-ตรวจ frontmatter ของ Skills ทั้งหกไฟล์:
+I am the first tester for ADLC in Action. Do only Step 0 from README.md.
+Read AGENTS.md and game-profile.md.
+Check the frontmatter in these six Skill files:
 .agents/skills/gfit-adlc-intent/SKILL.md
 .agents/skills/gfit-adlc-generate/SKILL.md
 .agents/skills/gfit-adlc-validate/SKILL.md
 .agents/skills/gfit-adlc-govern/SKILL.md
 .agents/skills/gfit-adlc-deploy/SKILL.md
 .agents/skills/gfit-adlc-observe/SKILL.md
-ตรวจ Git, uv, Python 3 or later และความสามารถอ่าน/เขียนไฟล์กับรันคำสั่ง
-ยังไม่สร้างเกม ไม่ติดตั้ง global skills และไม่ทำ Step ถัดไป
-รายงาน Skills ทั้ง 6 และสิ่งที่ยังขาดก่อนเริ่ม
+Check Git, uv, Python 3 or later, file access, and local command access.
+Do not build the game, install global Skills, or start the next Step.
+Report the six Skills and anything that is missing.
 ```
 
-ตรวจเอง: Agent พบ Skills 6 ตัวและยังไม่มี `app/` ถ้าขาด Python ให้ติดตั้ง Python 3 เวอร์ชันที่ uv รองรับ โดยไม่ต้องตรงกับ minor version ที่กำหนดไว้ล่วงหน้า
+Check the result: The agent found six Skills and there is no `app/` directory yet. If Python is missing, install a Python 3 version supported by uv. No fixed minor version is required.
 
-## Step 1 — Intent 1: เล่นจบหนึ่งรอบ (10 นาที)
+## Step 1 — Intent 1: Finish One Round (10 minutes)
 
 ```text
-ทำเฉพาะ Step 1 อ่าน AGENTS.md, game-profile.md และ .agents/skills/gfit-adlc-intent/SKILL.md
-ใช้ Game Project Binding สร้าง artifacts/intent-001/intent.md สำหรับผู้เล่นใหม่ที่เริ่มและจบรอบแรกได้ด้วยตัวเอง
-ใช้ target และ guardrails ของ Intent 1 จาก profile แยกสมมติฐานจากหลักฐานจริง
-หยุดให้ฉันอ่าน ห้ามเริ่มเขียนเกม
+Do only Step 1. Read AGENTS.md, game-profile.md, and .agents/skills/gfit-adlc-intent/SKILL.md.
+Use the Game Project Binding to create artifacts/intent-001/intent.md.
+The Intent is for a new player who can start and finish the first round without help.
+Use the Intent 1 target and guardrails from the profile. Keep the hypothesis separate from real evidence.
+Stop so I can review the file. Do not start building the game.
 ```
 
-**Govern checkpoint:** ตรวจ metric denominator, time window และข้อจำกัดของ self-test แล้วส่ง `ยืนยัน Intent 1 ตามไฟล์นี้`
+**Govern checkpoint:** Check the metric denominator, the time window, and the limits of a self-test. Then send `Confirm Intent 1 as written`.
 
-## Step 2 — Generate ↔ Validate: Spec และ Plan (15 นาที)
+## Step 2 — Generate ↔ Validate: Spec and Plan (15 minutes)
 
 ```text
-ทำเฉพาะ Step 2 อ่าน AGENTS.md, game-profile.md, .agents/skills/gfit-adlc-generate/SKILL.md และ .agents/skills/gfit-adlc-validate/SKILL.md
-อ่าน Intent 1 ที่ยืนยันแล้ว สร้าง spec.md และ plan.md ใน artifacts/intent-001/
-ให้ Validate กำหนด mapping G01–G10 ก่อน แล้วตรวจเอกสารและส่ง gaps กลับให้ Generate แก้
-แบ่งงานเป็น game logic, web flow และ telemetry พร้อม proof ของแต่ละส่วน
-ยังไม่เขียน implementation และหยุดให้ฉันตรวจ
+Do only Step 2. Read AGENTS.md, game-profile.md, .agents/skills/gfit-adlc-generate/SKILL.md, and .agents/skills/gfit-adlc-validate/SKILL.md.
+Read the confirmed Intent 1. Create spec.md and plan.md in artifacts/intent-001/.
+Validate must define the G01–G10 mapping first. Then check the documents and send gaps back to Generate for repair.
+Split the work into game logic, web flow, and telemetry. State the proof for each part.
+Do not write implementation code. Stop so I can review the files.
 ```
 
-**Govern checkpoint:** ตรวจ scope, commands และ acceptance mapping แล้วส่ง `อนุมัติ Spec และ Plan ของ Intent 1`
+**Govern checkpoint:** Check the scope, commands, and acceptance mapping. Then send `Approve the Intent 1 Spec and Plan`.
 
-## Step 3 — Generate ↔ Validate: สร้าง v1 (25–40 นาที)
+## Step 3 — Generate ↔ Validate: Build v1 (25–40 minutes)
 
 ```text
-ทำเฉพาะ Step 3 อ่าน AGENTS.md, game-profile.md, .agents/skills/gfit-adlc-generate/SKILL.md และ .agents/skills/gfit-adlc-validate/SKILL.md
-Implement Spec/Plan ของ Intent 1 ที่อนุมัติแล้วตาม stack และ commands ใน profile
-Validate กำหนด behavior proof ก่อน; ต้องเห็น failing test ด้วยเหตุผลที่คาดไว้ก่อน Generate ทำ implementation ทีละ slice
-วน feedback จนตรวจ G01–G10 ครบ สร้าง environment และ lock files ตาม game-profile.md
-เก็บหลักฐานจริงใน artifacts/intent-001/validation.md แล้วหยุดก่อน Govern
+Do only Step 3. Read AGENTS.md, game-profile.md, .agents/skills/gfit-adlc-generate/SKILL.md, and .agents/skills/gfit-adlc-validate/SKILL.md.
+Implement the approved Intent 1 Spec and Plan with the stack and commands in the profile.
+Validate must define behavior proof first. Show a failing test for the expected reason before Generate builds each small part.
+Repeat the feedback loop until G01–G10 have proof. Create the environment and lock files defined in game-profile.md.
+Record real evidence in artifacts/intent-001/validation.md. Stop before Govern.
 ```
 
-ตรวจเอง: อ่านหลักฐาน red/green อย่างน้อยหนึ่งกรณี แล้วรัน `uv run pytest -q`
+Check the result: Read at least one red and green test record. Then run `uv run pytest -q`.
 
-## Step 4 — Govern v1 (10 นาที)
+## Step 4 — Govern v1 (10 minutes)
 
 ```text
-ทำเฉพาะ Step 4 อ่าน AGENTS.md, game-profile.md และ .agents/skills/gfit-adlc-govern/SKILL.md
-ตรวจ revision เทียบ Intent, Spec และ validation ของ Intent 1
-สร้าง artifacts/intent-001/decision.md พร้อม recommendation Approve/Revise/Stop และให้ human_decision เป็น pending
-ให้วิธีเปิดเกมชั่วคราวด้วย source=test และกรณี smoke test หยุดให้ฉันลองและตัดสินใจ
+Do only Step 4. Read AGENTS.md, game-profile.md, and .agents/skills/gfit-adlc-govern/SKILL.md.
+Check the revision against the Intent, Spec, and validation for Intent 1.
+Create artifacts/intent-001/decision.md with an Approve, Revise, or Stop recommendation. Set human_decision to pending.
+Give me a way to open the game with source=test and a short smoke test. Stop so I can test it and decide.
 ```
 
-ทดลอง input ผิด, win, loss และ refresh แล้วตอบ `Approve สำหรับ localhost v1; ผล smoke test คือ ...` หรือ `Revise: ...`
+Try invalid input, a win, a loss, and a page refresh. Then send `Approve localhost v1. Smoke test result: ...` or `Revise: ...`.
 
-## Step 5 — Deploy v1 บนเครื่อง (5 นาที)
+## Step 5 — Deploy v1 on Your Computer (5 minutes)
 
 ```text
-ทำเฉพาะ Step 5 อ่าน AGENTS.md, game-profile.md และ .agents/skills/gfit-adlc-deploy/SKILL.md
-ตรวจว่า decision อนุมัติ revision ปัจจุบันและ target localhost แล้ว
-สร้าง artifacts/intent-001/release.md พร้อม revision, วิธีเปิด/หยุด, health check และ rollback
-เปิดเกมตาม local release command หากทำได้ ห้ามอ้างว่าเปิดแล้วจนกว่าจะตรวจ response จริง
+Do only Step 5. Read AGENTS.md, game-profile.md, and .agents/skills/gfit-adlc-deploy/SKILL.md.
+Check that the decision approves the current revision and the localhost target.
+Create artifacts/intent-001/release.md with the revision, start and stop steps, health check, and rollback steps.
+Start the game with the local release command if possible. Do not say it is running until you check a real response.
 ```
 
-เปิด [เกมบนเครื่อง](http://127.0.0.1:8000) และหยุดด้วย Ctrl+C
+Open [the local game](http://127.0.0.1:8000). Press Ctrl+C to stop it.
 
-## Step 6 — Observe ↔ Govern v1 (10–15 นาที)
+## Step 6 — Observe ↔ Govern v1 (10–15 minutes)
 
-เก็บ session แบบ `source=real` โดยไม่ชี้นำให้ replay และรอ follow-up window ครบ Self-test หลาย session ต้องติดป้ายว่าเป็นผู้ทดลองคนเดียว
+Collect `source=real` sessions without asking players to replay. Wait until the follow-up window ends. If one person runs several self-tests, label them as tests from one person.
 
 ```text
-ทำเฉพาะ Step 6 อ่าน AGENTS.md, game-profile.md, .agents/skills/gfit-adlc-observe/SKILL.md และ .agents/skills/gfit-adlc-govern/SKILL.md
-วิเคราะห์ telemetry จริงของ v1 ลง artifacts/intent-001/observation.md
-ระบุ source, cutoff, eligible sample, completion/replay และข้อจำกัด ถ้าข้อมูลไม่พอให้รายงาน insufficient evidence
-สร้าง resolution.md พร้อม recommendation Resolved/Iterate/Stop แต่ให้ human_resolution เป็น pending
-หยุดให้ฉันตัดสิน ห้ามสร้าง Intent 2 อัตโนมัติ
+Do only Step 6. Read AGENTS.md, game-profile.md, .agents/skills/gfit-adlc-observe/SKILL.md, and .agents/skills/gfit-adlc-govern/SKILL.md.
+Analyze real v1 telemetry in artifacts/intent-001/observation.md.
+State the source, cutoff time, eligible sample, completion rate, replay rate, and limits. Report INSUFFICIENT EVIDENCE if there is not enough data.
+Create resolution.md with a Resolved, Iterate, or Stop recommendation. Set human_resolution to pending.
+Stop so I can decide. Do not create Intent 2 by yourself.
 ```
 
-ตอบ `Resolved`, `Iterate` หรือ `Stop` พร้อมเหตุผล การเลือก Iterate เพื่อเรียนต่อไม่เท่ากับยืนยันว่า Intent 1 สำเร็จ
+Send `Resolved`, `Iterate`, or `Stop` with a reason. You may choose Iterate to continue the workshop. This choice does not prove that Intent 1 passed.
 
-## Step 7 — Intent 2: อยากเริ่มรอบสอง (10 นาที)
+## Step 7 — Intent 2: Start a Second Round (10 minutes)
 
 ```text
-ทำเฉพาะ Step 7 อ่าน AGENTS.md, game-profile.md และ .agents/skills/gfit-adlc-intent/SKILL.md
-อ่าน observation.md และ resolution.md ของ Intent 1
-เปรียบเทียบปุ่มเล่นอีกครั้ง ระดับความยาก และคะแนนแบบสั้น ๆ แล้วใช้ intervention ที่ profile กำหนด
-สร้าง artifacts/intent-002/intent.md ด้วย target และ guardrails ของ Intent 2
-หยุดให้ฉันยืนยัน ห้ามแก้เกม
+Do only Step 7. Read AGENTS.md, game-profile.md, and .agents/skills/gfit-adlc-intent/SKILL.md.
+Read observation.md and resolution.md for Intent 1.
+Briefly compare a Play again button, difficulty levels, and a score. Use the intervention set in the profile.
+Create artifacts/intent-002/intent.md with the Intent 2 target and guardrails.
+Stop so I can confirm the Intent. Do not change the game.
 ```
 
-**Govern checkpoint:** ตรวจว่า Agent ไม่สรุปว่าเวลาเล่นนานเท่ากับความสนุก แล้วส่ง `ยืนยัน Intent 2 ตามไฟล์นี้`
+**Govern checkpoint:** Check that the agent does not treat longer play time as proof of fun. Then send `Confirm Intent 2 as written`.
 
-## Step 8 — Generate ↔ Validate: Spec และ Plan v2 (10 นาที)
+## Step 8 — Generate ↔ Validate: v2 Spec and Plan (10 minutes)
 
 ```text
-ทำเฉพาะ Step 8 อ่าน AGENTS.md, game-profile.md, .agents/skills/gfit-adlc-generate/SKILL.md และ .agents/skills/gfit-adlc-validate/SKILL.md
-สร้าง spec.md และ plan.md ใน artifacts/intent-002/ จาก Intent ที่ยืนยันแล้ว
-ให้ Validate ตรวจ R01–R03, regression G01–G09 และส่วน G10 ที่เปลี่ยน แล้วส่ง gaps กลับให้ Generate แก้
-ระบุ session/round lifecycle การรักษา baseline และหยุดก่อน implementation
+Do only Step 8. Read AGENTS.md, game-profile.md, .agents/skills/gfit-adlc-generate/SKILL.md, and .agents/skills/gfit-adlc-validate/SKILL.md.
+Create spec.md and plan.md in artifacts/intent-002/ from the confirmed Intent.
+Validate must check R01–R03, regression cases G01–G09, and the changed part of G10. Send gaps back to Generate for repair.
+Define the session and round life cycle. Explain how you will keep the baseline. Stop before implementation.
 ```
 
-**Govern checkpoint:** ตรวจว่าไม่มีฟีเจอร์เกิน scope แล้วส่ง `อนุมัติ Spec และ Plan ของ Intent 2`
+**Govern checkpoint:** Check that the plan has no extra features. Then send `Approve the Intent 2 Spec and Plan`.
 
-## Step 9 — Generate ↔ Validate: สร้าง v2 (20–30 นาที)
+## Step 9 — Generate ↔ Validate: Build v2 (20–30 minutes)
 
 ```text
-ทำเฉพาะ Step 9 อ่าน AGENTS.md, game-profile.md, .agents/skills/gfit-adlc-generate/SKILL.md และ .agents/skills/gfit-adlc-validate/SKILL.md
-Implement เฉพาะ Plan ของ Intent 2 ทดสอบ replay หลังชนะ/แพ้และ regression
-Validate กำหนด proof ก่อนและส่ง failures กลับให้ Generate แก้จนหลักฐานครบ
-รักษา dependency lock และหลักฐาน v1 ถ้าไม่จำเป็นต้องเปลี่ยน
-เก็บ artifacts/intent-002/validation.md จากผลจริง แล้วหยุดก่อน Govern
+Do only Step 9. Read AGENTS.md, game-profile.md, .agents/skills/gfit-adlc-generate/SKILL.md, and .agents/skills/gfit-adlc-validate/SKILL.md.
+Implement only the Intent 2 Plan. Test replay after a win and a loss. Run the regression checks.
+Validate must define proof first and send failures back to Generate. Repeat until the evidence is complete.
+Keep the dependency lock and v1 evidence unless there is a clear need to change them.
+Record real results in artifacts/intent-002/validation.md. Stop before Govern.
 ```
 
-ตรวจเอง: replay รักษา session_id แต่สร้าง round_id ใหม่ และข้อมูล v1 ไม่ถูกติดป้ายใหม่
+Check the result: Replay keeps the same session_id, creates a new round_id, and does not change old v1 labels.
 
-## Step 10A — Govern v2 (10 นาที)
+## Step 10A — Govern v2 (10 minutes)
 
 ```text
-ทำเฉพาะ Step 10A อ่าน AGENTS.md, game-profile.md และ .agents/skills/gfit-adlc-govern/SKILL.md
-สร้าง decision.md ของ Intent 2 จาก revision และหลักฐานปัจจุบัน
-แนะนำ Approve/Revise/Stop ให้ human_decision เป็น pending และหยุดให้ฉัน smoke test กับตัดสินใจ
+Do only Step 10A. Read AGENTS.md, game-profile.md, and .agents/skills/gfit-adlc-govern/SKILL.md.
+Create the Intent 2 decision.md from the current revision and evidence.
+Recommend Approve, Revise, or Stop. Set human_decision to pending. Stop so I can run a smoke test and decide.
 ```
 
-## Step 10B — Deploy v2 บนเครื่อง (5 นาที)
+## Step 10B — Deploy v2 on Your Computer (5 minutes)
 
 ```text
-ทำเฉพาะ Step 10B อ่าน AGENTS.md, game-profile.md และ .agents/skills/gfit-adlc-deploy/SKILL.md
-ตรวจว่า decision อนุมัติ revision ปัจจุบันและ localhost v2
-สร้าง release.md เปิด v2 ตาม command ใน profile และตรวจ response กับ telemetry labels ตามจริง
-หยุดก่อน Observe
+Do only Step 10B. Read AGENTS.md, game-profile.md, and .agents/skills/gfit-adlc-deploy/SKILL.md.
+Check that the decision approves the current revision and localhost v2.
+Create release.md. Start v2 with the command in the profile. Check the response and telemetry labels with real results.
+Stop before Observe.
 ```
 
-## Step 11 — Observe ↔ Govern → Intent ถัดไป (15 นาที)
+## Step 11 — Observe ↔ Govern and the Next Intent (15 minutes)
 
 ```text
-ทำเฉพาะ Step 11 อ่าน AGENTS.md, game-profile.md, .agents/skills/gfit-adlc-observe/SKILL.md และ .agents/skills/gfit-adlc-govern/SKILL.md
-ใช้ telemetry/events.jsonl จากการเล่นจริง วิเคราะห์ v1/v2 ลง artifacts/intent-002/observation.md
-ระบุ source, cutoff, eligible sample, completion/replay และข้อจำกัด ถ้าข้อมูลไม่พอให้รายงาน INSUFFICIENT EVIDENCE
-ใช้ observation.md เป็นฐานของ resolution ห้ามสร้างข้อมูลหรือตัวเลขสมมติแทนผลผู้เล่น
-สร้าง resolution.md พร้อม recommendation แต่ให้ human_resolution เป็น pending
-หยุดให้ฉันตัดสิน เสนอ Intent ถัดไปได้แต่ห้ามสร้างหรือ implement อัตโนมัติ
+Do only Step 11. Read AGENTS.md, game-profile.md, .agents/skills/gfit-adlc-observe/SKILL.md, and .agents/skills/gfit-adlc-govern/SKILL.md.
+Use telemetry/events.jsonl from real play. Compare v1 and v2 in artifacts/intent-002/observation.md.
+State the source, cutoff time, eligible sample, completion rate, replay rate, and limits. Report INSUFFICIENT EVIDENCE if there is not enough data.
+Use observation.md as the basis for resolution. Do not create data or numbers to replace missing player results.
+Create resolution.md with a recommendation. Set human_resolution to pending.
+Stop so I can decide. You may suggest the next Intent, but do not create or implement it by yourself.
 ```
 
-ตรวจเอง: สูตรและตัวหารถูกต้อง แยก test data จาก real data และไม่สรุปว่า Intent สำเร็จเมื่อหลักฐานไม่พอหรือ guardrail ไม่ผ่าน
+Check the result: The formulas and denominators are correct. Test data and real data are separate. The agent does not say the Intent passed when evidence is weak or a guardrail failed.
 
-## หยุดและกลับมาทำต่อ
+## Stop and Continue Later
 
-บอก Agent ว่า “หยุดที่ Step นี้” กลับมาด้วยการคัดลอก prompt เต็มของ Step ที่ต้องการทำต่อ ซึ่งระบุ `AGENTS.md`, `game-profile.md` และ Skills ที่เกี่ยวข้อง ใช้ local Git commit เป็น audit trail ได้หลังตรวจ diff ห้าม commit `.env`, `.venv` หรือ `telemetry/events.jsonl`
+Tell the agent, `Stop at this Step.` To continue, copy the full prompt for the next Step. The prompt must name `AGENTS.md`, `game-profile.md`, and the required Skills. You may use local Git commits as an audit trail after you check the diff. Do not commit `.env`, `.venv`, or `telemetry/events.jsonl`.
 
-## Completion checklist
+## Completion Checklist
 
-- [ ] เกมทั้งสอง Intent ผ่าน acceptance ที่เกี่ยวข้องและคุณทดลองจริง
-- [ ] แต่ละ Intent มี intent, spec, plan, validation, decision, release, observation และ resolution
-- [ ] Intent 2 ใช้ข้อมูลจริงที่ระบุ sample, cutoff และข้อจำกัดชัดเจน
-- [ ] ไม่มีการแต่งผลตรวจ การอนุมัติ release หรือข้อมูลผู้เล่น
-- [ ] อธิบายได้ว่า Generate ↔ Validate ทำงานคู่กันและ Observe ส่ง signal กลับ Intent อย่างไร
+- [ ] You tested both Intents, and each one passed its acceptance cases.
+- [ ] Each Intent has an intent, spec, plan, validation, decision, release, observation, and resolution.
+- [ ] The Intent 2 observation states the sample, cutoff time, and limits of the real data.
+- [ ] No one made up test results, release approval, or player data.
+- [ ] You can explain how Generate and Validate work together and how Observe sends a signal back to Intent.
 
-จด feedback ใน `artifacts/pilot-notes.md`: Agent/model, Step ที่ติด, เวลาที่ใช้, prompt ที่ต้องแก้ และความต่างจากผลคาดหวัง โดยไม่ใส่ข้อมูลบัญชีหรือข้อมูลส่วนบุคคล
+Record feedback in `artifacts/pilot-notes.md`. Include the agent or model, blocked Step, time used, prompt changes, and any result that was different from the expected result. Do not include account data or personal data.
