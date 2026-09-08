@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ADLC in Action — Visual Map</title>
+  <style>
+    :root {
+      --ink: #17211b;
+      --muted: #5b665f;
+      --paper: #f4f2e9;
+      --card: #fffdf6;
+      --green: #176b4d;
+      --green-soft: #dcecdf;
+      --orange: #e67232;
+      --orange-soft: #fae1cf;
+      --line: #bdc9be;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    main { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 56px 0 72px; }
+    header { max-width: 780px; margin-bottom: 42px; }
+    .eyebrow { color: var(--green); font-size: .8rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { margin: 8px 0 12px; font-size: clamp(2.4rem, 7vw, 5.6rem); line-height: .95; letter-spacing: -.055em; }
+    header p { color: var(--muted); font-size: 1.08rem; max-width: 680px; }
+    .loop {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(145px, 1fr));
+      gap: 12px;
+      position: relative;
+    }
+    .phase {
+      min-height: 235px;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--card);
+      box-shadow: 0 12px 30px rgba(23, 33, 27, .06);
+    }
+    .phase.intent, .phase.govern, .phase.observe { border-top: 6px solid var(--orange); }
+    .phase.generate, .phase.validate, .phase.deploy { border-top: 6px solid var(--green); }
+    .number { color: var(--muted); font-size: .75rem; font-weight: 800; letter-spacing: .1em; }
+    h2 { margin: 22px 0 8px; font-size: 1.35rem; }
+    .owner { display: inline-block; margin-bottom: 14px; padding: 4px 9px; border-radius: 999px; font-size: .72rem; font-weight: 750; background: var(--green-soft); color: var(--green); }
+    .human { background: var(--orange-soft); color: #9b431b; }
+    .phase p { margin: 0 0 14px; color: var(--muted); font-size: .92rem; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .82em; }
+    .artifact { color: var(--ink); font-size: .78rem; font-weight: 700; }
+    .return {
+      margin: 18px 0 44px;
+      padding: 15px 22px;
+      border-radius: 14px;
+      background: var(--ink);
+      color: white;
+      text-align: center;
+      font-weight: 700;
+    }
+    .return span { color: #a7dbbd; }
+    .lesson {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+    .panel { padding: 26px; border-radius: 18px; background: var(--card); border: 1px solid var(--line); }
+    .panel h3 { margin: 0 0 14px; font-size: 1.25rem; }
+    .panel ul { margin: 0; padding-left: 20px; color: var(--muted); }
+    .panel li + li { margin-top: 8px; }
+    .signal { border-color: var(--orange); background: #fff7ef; }
+    footer { margin-top: 30px; color: var(--muted); font-size: .85rem; }
+    @media (max-width: 980px) { .loop { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 620px) {
+      main { width: min(100% - 22px, 1180px); padding-top: 32px; }
+      .loop, .lesson { grid-template-columns: 1fr; }
+      .phase { min-height: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <div class="eyebrow">ADLC in Action · Visual Companion</div>
+      <h1>Agent ลงมือ<br>มนุษย์กำกับ</h1>
+      <p>ADLC เป็นวงจรของโหมดที่ทำงานซ้อนกัน โดยเฉพาะ Generate ↔ Validate และ Observe → Intent เพื่อเชื่อมการลงมือของ Agent กับการตัดสินใจและผลลัพธ์ที่มนุษย์ตรวจสอบได้</p>
+    </header>
+
+    <section class="loop" aria-label="ADLC six modes">
+      <article class="phase intent">
+        <div class="number">01</div>
+        <h2>Intent</h2>
+        <span class="owner human">Human + Agent</span>
+        <p>เปลี่ยนโจทย์เป็น hypothesis ที่วัดได้ พร้อม target และ guardrail</p>
+        <div class="artifact"><code>hypothesis · target · guardrails</code></div>
+      </article>
+      <article class="phase generate">
+        <div class="number">02</div>
+        <h2>Generate</h2>
+        <span class="owner">Agent executes</span>
+        <p>สร้าง spec, plan, code และเอกสารภายใต้ขอบเขตที่มนุษย์ยืนยัน</p>
+        <div class="artifact"><code>spec · plan · implementation</code></div>
+      </article>
+      <article class="phase validate">
+        <div class="number">03</div>
+        <h2>Validate</h2>
+        <span class="owner">Agent verifies</span>
+        <p>วนร่วมกับ Generate ผ่าน tests, edge cases และหลักฐานที่ผูกกับ revision</p>
+        <div class="artifact"><code>tests · review · evidence</code></div>
+      </article>
+      <article class="phase govern">
+        <div class="number">04</div>
+        <h2>Govern</h2>
+        <span class="owner human">Human decides</span>
+        <p>ประเมินความสอดคล้องกับ Intent ความเสี่ยง และหลักฐาน ก่อนเลือกทางไปต่อ</p>
+        <div class="artifact"><code>decision · resolution</code></div>
+      </article>
+      <article class="phase deploy">
+        <div class="number">05</div>
+        <h2>Deploy</h2>
+        <span class="owner">Agent prepares</span>
+        <p>นำ revision ที่อนุมัติไปยัง target ที่กำหนด พร้อมตรวจสุขภาพและวิธีกู้คืน</p>
+        <div class="artifact"><code>release · health check · rollback</code></div>
+      </article>
+      <article class="phase observe">
+        <div class="number">06</div>
+        <h2>Observe</h2>
+        <span class="owner human">Signal + judgment</span>
+        <p>วิเคราะห์พฤติกรรมจริง แยกจาก test data แล้วใช้ผลตั้งคำถามรอบใหม่</p>
+        <div class="artifact"><code>signals · guardrails · observation</code></div>
+      </article>
+    </section>
+
+    <div class="return"><span>Observe → Govern</span> ให้มนุษย์เลือก Resolved, Iterate หรือ Stop; Iterate ส่ง signal ไปสร้าง <span>Intent ถัดไป</span></div>
+
+    <section class="lesson">
+      <article class="panel">
+        <h3>Intent 1 · เล่นให้จบหนึ่งรอบ</h3>
+        <ul>
+          <li>สร้างเกมทายเลข 1–100 ภายใน 7 ครั้ง</li>
+          <li>Generate และ Validate เกมไปพร้อมกัน</li>
+          <li>มนุษย์อนุมัติ revision ก่อนนำไปทดลอง</li>
+          <li>สังเกต completion และ friction ของการเริ่มรอบใหม่</li>
+        </ul>
+      </article>
+      <article class="panel signal">
+        <h3>Intent 2 · อยากเริ่มรอบสอง</h3>
+        <ul>
+          <li>Signal จากรอบแรกเปลี่ยนคำถาม “เล่นนานขึ้น” ให้ชัดขึ้น</li>
+          <li>เพิ่มปุ่มเล่นอีกครั้งโดยคงกติกาหลัก</li>
+          <li>วัด replay rate พร้อม completion guardrail</li>
+          <li>เป้าหมายผ่านแต่ guardrail พังได้ มนุษย์จึงยังต้อง Govern</li>
+        </ul>
+      </article>
+    </section>
+
+    <footer>อ้างอิงแนวคิดจาก ADLC v1.0 โดย Asaf Saar และแนวทาง artifact chain จาก Anthropic AI-Native SDLC Playbook</footer>
+  </main>
+</body>
+</html>
