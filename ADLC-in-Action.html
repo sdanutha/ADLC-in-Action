@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="th">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -85,8 +85,8 @@
   <main>
     <header>
       <div class="eyebrow">ADLC in Action · Visual Companion</div>
-      <h1>Agent ลงมือ<br>มนุษย์กำกับ</h1>
-      <p>ADLC เป็นวงจรของโหมดที่ทำงานซ้อนกัน โดยเฉพาะ Generate ↔ Validate และ Observe → Intent เพื่อเชื่อมการลงมือของ Agent กับการตัดสินใจและผลลัพธ์ที่มนุษย์ตรวจสอบได้</p>
+      <h1>Agents build<br>Humans guide</h1>
+      <p>ADLC modes can overlap. Generate and Validate work together. Observe sends new questions to Intent. This links Agent work to human decisions and results that people can check.</p>
     </header>
 
     <section class="loop" aria-label="ADLC six modes">
@@ -94,70 +94,70 @@
         <div class="number">01</div>
         <h2>Intent</h2>
         <span class="owner human">Human + Agent</span>
-        <p>เปลี่ยนโจทย์เป็น hypothesis ที่วัดได้ พร้อม target และ guardrail</p>
+        <p>Turn a question into a hypothesis with a clear target and guardrails.</p>
         <div class="artifact"><code>hypothesis · target · guardrails</code></div>
       </article>
       <article class="phase generate">
         <div class="number">02</div>
         <h2>Generate</h2>
         <span class="owner">Agent executes</span>
-        <p>สร้าง spec, plan, code และเอกสารภายใต้ขอบเขตที่มนุษย์ยืนยัน</p>
+        <p>Create the spec, plan, code, and documents within the confirmed scope.</p>
         <div class="artifact"><code>spec · plan · implementation</code></div>
       </article>
       <article class="phase validate">
         <div class="number">03</div>
         <h2>Validate</h2>
         <span class="owner">Agent verifies</span>
-        <p>วนร่วมกับ Generate ผ่าน tests, edge cases และหลักฐานที่ผูกกับ revision</p>
+        <p>Work with Generate. Check tests, edge cases, and evidence for the revision.</p>
         <div class="artifact"><code>tests · review · evidence</code></div>
       </article>
       <article class="phase govern">
         <div class="number">04</div>
         <h2>Govern</h2>
         <span class="owner human">Human decides</span>
-        <p>ประเมินความสอดคล้องกับ Intent ความเสี่ยง และหลักฐาน ก่อนเลือกทางไปต่อ</p>
+        <p>Review the Intent, risks, and evidence. A human chooses what happens next.</p>
         <div class="artifact"><code>decision · resolution</code></div>
       </article>
       <article class="phase deploy">
         <div class="number">05</div>
         <h2>Deploy</h2>
         <span class="owner">Agent prepares</span>
-        <p>นำ revision ที่อนุมัติไปยัง target ที่กำหนด พร้อมตรวจสุขภาพและวิธีกู้คืน</p>
+        <p>Release the approved revision to its target. Check its health and recovery steps.</p>
         <div class="artifact"><code>release · health check · rollback</code></div>
       </article>
       <article class="phase observe">
         <div class="number">06</div>
         <h2>Observe</h2>
         <span class="owner human">Signal + judgment</span>
-        <p>วิเคราะห์พฤติกรรมจริง แยกจาก test data แล้วใช้ผลตั้งคำถามรอบใหม่</p>
+        <p>Study real behavior apart from test data. Use the result to ask a new question.</p>
         <div class="artifact"><code>signals · guardrails · observation</code></div>
       </article>
     </section>
 
-    <div class="return"><span>Observe → Govern</span> ให้มนุษย์เลือก Resolved, Iterate หรือ Stop; Iterate ส่ง signal ไปสร้าง <span>Intent ถัดไป</span></div>
+    <div class="return"><span>Observe → Govern</span> gives the decision to a human: Resolved, Iterate, or Stop. Iterate sends a signal to the <span>next Intent</span>.</div>
 
     <section class="lesson">
       <article class="panel">
-        <h3>Intent 1 · เล่นให้จบหนึ่งรอบ</h3>
+        <h3>Intent 1 · Finish one round</h3>
         <ul>
-          <li>สร้างเกมทายเลข 1–100 ภายใน 7 ครั้ง</li>
-          <li>Generate และ Validate เกมไปพร้อมกัน</li>
-          <li>มนุษย์อนุมัติ revision ก่อนนำไปทดลอง</li>
-          <li>สังเกต completion และ friction ของการเริ่มรอบใหม่</li>
+          <li>Build a 1–100 number game with seven guesses.</li>
+          <li>Generate and Validate the game together.</li>
+          <li>A human approves the revision before a test release.</li>
+          <li>Observe completion and the effort needed to start again.</li>
         </ul>
       </article>
       <article class="panel signal">
-        <h3>Intent 2 · อยากเริ่มรอบสอง</h3>
+        <h3>Intent 2 · Choose a second round</h3>
         <ul>
-          <li>Signal จากรอบแรกเปลี่ยนคำถาม “เล่นนานขึ้น” ให้ชัดขึ้น</li>
-          <li>เพิ่มปุ่มเล่นอีกครั้งโดยคงกติกาหลัก</li>
-          <li>วัด replay rate พร้อม completion guardrail</li>
-          <li>เป้าหมายผ่านแต่ guardrail พังได้ มนุษย์จึงยังต้อง Govern</li>
+          <li>The first signal makes the question about longer play more clear.</li>
+          <li>Add a Play again button and keep the main game rules.</li>
+          <li>Measure replay rate with a completion guardrail.</li>
+          <li>A target can pass while a guardrail fails. A human must still Govern.</li>
         </ul>
       </article>
     </section>
 
-    <footer>อ้างอิงแนวคิดจาก ADLC v1.0 โดย Asaf Saar และแนวทาง artifact chain จาก Anthropic AI-Native SDLC Playbook</footer>
+    <footer>Based on ADLC v1.0 by Asaf Saar and the artifact chain in the Anthropic AI-Native SDLC Playbook</footer>
   </main>
 </body>
 </html>
