@@ -14,8 +14,8 @@ Use any coding agent. Build the game, collect evidence, and improve it through t
 
 ```text
 Intent → Generate ↔ Validate → Govern → Deploy → Observe
-  ↑                                                   |
-  └──────────────────── new signal ───────────────────┘
+ ↑                                                    |
+ └────────────────── outcome signal ──────────────────┘
 ```
 
 The Steps make the workshop easy to follow. Real ADLC work does not need to follow a fixed pipeline. Generate and Validate work in a feedback loop. Observe can send a signal into a new Intent.
