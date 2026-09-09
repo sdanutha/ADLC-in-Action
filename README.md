@@ -5,7 +5,7 @@ The `main` branch contains general rules for coding agents and reusable ADLC Ski
 ```text
 Intent → Generate ↔ Validate → Govern → Deploy → Observe
   ↑                                                   |
-  └──────────────────── outcome signal ───────────────┘
+  └────────────────── outcome signal ─────────────────┘
 ```
 
 ## Files in This Branch
