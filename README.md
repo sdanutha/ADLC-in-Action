@@ -26,25 +26,18 @@ The Steps make the workshop easy to follow. Real ADLC work does not need to foll
 - Open the repository in a coding agent that can read files, write files, and run local commands.
 - Read [the ADLC agent rules](AGENTS.md) and the [Game Project Binding](game-profile.md).
 - Every agent uses the same project Skills in `.agents/skills/gfit-adlc-*`. You do not need to install the Skill pack for all projects.
-- If the agent does not find the Skills, give it the full path to each `SKILL.md`.
+- When a prompt says `Use /gfit-adlc-<mode>`, run that Skill command. If slash commands are unavailable, read `.agents/skills/gfit-adlc-<mode>/SKILL.md` instead.
 
-**Copy the full prompt for each Step.** Each prompt names `AGENTS.md`, `game-profile.md`, and the Skills it needs. A short prompt such as `Do Step 3` may not load every required file.
+**Copy the full prompt for each Step.** A short prompt such as `Do Step 3` may not load the needed context.
 
 ## Step 0 — Check Your Setup (5–10 minutes)
 
 ```text
-I am the first tester for ADLC in Action. Do only Step 0 from README.md.
+I am the first tester for ADLC in Action. Do only Step 0.
 Read AGENTS.md and game-profile.md.
-Check the frontmatter in these six Skill files:
-.agents/skills/gfit-adlc-intent/SKILL.md
-.agents/skills/gfit-adlc-generate/SKILL.md
-.agents/skills/gfit-adlc-validate/SKILL.md
-.agents/skills/gfit-adlc-govern/SKILL.md
-.agents/skills/gfit-adlc-deploy/SKILL.md
-.agents/skills/gfit-adlc-observe/SKILL.md
+Use /gfit-adlc-intent, /gfit-adlc-generate, /gfit-adlc-validate, /gfit-adlc-govern, /gfit-adlc-deploy, and /gfit-adlc-observe.
 Check Git, uv, Python 3 or later, file access, and local command access.
-Do not build the game, install global Skills, or start the next Step.
-Report the six Skills and anything that is missing.
+Do not build the game or start the next Step. Report the six Skills and anything missing.
 ```
 
 Check the result: The agent found six Skills and there is no `app/` directory yet. If Python is missing, install a Python 3 version supported by uv. No fixed minor version is required.
@@ -52,7 +45,7 @@ Check the result: The agent found six Skills and there is no `app/` directory ye
 ## Step 1 — Intent 1: Finish One Round (10 minutes)
 
 ```text
-Do only Step 1. Read AGENTS.md, game-profile.md, and .agents/skills/gfit-adlc-intent/SKILL.md.
+Do only Step 1. Read AGENTS.md and game-profile.md. Use /gfit-adlc-intent.
 Use the Game Project Binding to create artifacts/intent-001/intent.md.
 The Intent is for a new player who can start and finish the first round without help.
 Use the Intent 1 target and guardrails from the profile. Keep the hypothesis separate from real evidence.
@@ -64,7 +57,7 @@ Stop so I can review the file. Do not start building the game.
 ## Step 2 — Generate ↔ Validate: Spec and Plan (15 minutes)
 
 ```text
-Do only Step 2. Read AGENTS.md, game-profile.md, .agents/skills/gfit-adlc-generate/SKILL.md, and .agents/skills/gfit-adlc-validate/SKILL.md.
+Do only Step 2. Read AGENTS.md and game-profile.md. Use /gfit-adlc-generate and /gfit-adlc-validate.
 Read the confirmed Intent 1. Create spec.md and plan.md in artifacts/intent-001/.
 Validate must define the G01–G10 mapping first. Then check the documents and send gaps back to Generate for repair.
 Split the work into game logic, web flow, and telemetry. State the proof for each part.
@@ -76,7 +69,7 @@ Do not write implementation code. Stop so I can review the files.
 ## Step 3 — Generate ↔ Validate: Build v1 (25–40 minutes)
 
 ```text
-Do only Step 3. Read AGENTS.md, game-profile.md, .agents/skills/gfit-adlc-generate/SKILL.md, and .agents/skills/gfit-adlc-validate/SKILL.md.
+Do only Step 3. Read AGENTS.md and game-profile.md. Use /gfit-adlc-generate and /gfit-adlc-validate.
 Implement the approved Intent 1 Spec and Plan with the stack and commands in the profile.
 Validate must define behavior proof first. Show a failing test for the expected reason before Generate builds each small part.
 Repeat the feedback loop until G01–G10 have proof. Create the environment and lock files defined in game-profile.md.
@@ -88,7 +81,7 @@ Check the result: Read at least one red and green test record. Then run `uv run 
 ## Step 4 — Govern v1 (10 minutes)
 
 ```text
-Do only Step 4. Read AGENTS.md, game-profile.md, and .agents/skills/gfit-adlc-govern/SKILL.md.
+Do only Step 4. Read AGENTS.md and game-profile.md. Use /gfit-adlc-govern.
 Check the revision against the Intent, Spec, and validation for Intent 1.
 Create artifacts/intent-001/decision.md with an Approve, Revise, or Stop recommendation. Set human_decision to pending.
 Give me a way to open the game with source=test and a short smoke test. Stop so I can test it and decide.
@@ -99,7 +92,7 @@ Try invalid input, a win, a loss, and a page refresh. Then send `Approve localho
 ## Step 5 — Deploy v1 on Your Computer (5 minutes)
 
 ```text
-Do only Step 5. Read AGENTS.md, game-profile.md, and .agents/skills/gfit-adlc-deploy/SKILL.md.
+Do only Step 5. Read AGENTS.md and game-profile.md. Use /gfit-adlc-deploy.
 Check that the decision approves the current revision and the localhost target.
 Create artifacts/intent-001/release.md with the revision, start and stop steps, health check, and rollback steps.
 Start the game with the local release command if possible. Do not say it is running until you check a real response.
@@ -112,7 +105,7 @@ Open [the local game](http://127.0.0.1:8000). Press Ctrl+C to stop it.
 Collect `source=real` sessions without asking players to replay. Wait until the follow-up window ends. If one person runs several self-tests, label them as tests from one person.
 
 ```text
-Do only Step 6. Read AGENTS.md, game-profile.md, .agents/skills/gfit-adlc-observe/SKILL.md, and .agents/skills/gfit-adlc-govern/SKILL.md.
+Do only Step 6. Read AGENTS.md and game-profile.md. Use /gfit-adlc-observe and /gfit-adlc-govern.
 Analyze real v1 telemetry in artifacts/intent-001/observation.md.
 State the source, cutoff time, eligible sample, completion rate, replay rate, and limits. Report INSUFFICIENT EVIDENCE if there is not enough data.
 Create resolution.md with a Resolved, Iterate, or Stop recommendation. Set human_resolution to pending.
@@ -124,7 +117,7 @@ Send `Resolved`, `Iterate`, or `Stop` with a reason. You may choose Iterate to c
 ## Step 7 — Intent 2: Start a Second Round (10 minutes)
 
 ```text
-Do only Step 7. Read AGENTS.md, game-profile.md, and .agents/skills/gfit-adlc-intent/SKILL.md.
+Do only Step 7. Read AGENTS.md and game-profile.md. Use /gfit-adlc-intent.
 Read observation.md and resolution.md for Intent 1.
 Briefly compare a Play again button, difficulty levels, and a score. Use the intervention set in the profile.
 Create artifacts/intent-002/intent.md with the Intent 2 target and guardrails.
@@ -136,7 +129,7 @@ Stop so I can confirm the Intent. Do not change the game.
 ## Step 8 — Generate ↔ Validate: v2 Spec and Plan (10 minutes)
 
 ```text
-Do only Step 8. Read AGENTS.md, game-profile.md, .agents/skills/gfit-adlc-generate/SKILL.md, and .agents/skills/gfit-adlc-validate/SKILL.md.
+Do only Step 8. Read AGENTS.md and game-profile.md. Use /gfit-adlc-generate and /gfit-adlc-validate.
 Create spec.md and plan.md in artifacts/intent-002/ from the confirmed Intent.
 Validate must check R01–R03, regression cases G01–G09, and the changed part of G10. Send gaps back to Generate for repair.
 Define the session and round life cycle. Explain how you will keep the baseline. Stop before implementation.
@@ -147,7 +140,7 @@ Define the session and round life cycle. Explain how you will keep the baseline.
 ## Step 9 — Generate ↔ Validate: Build v2 (20–30 minutes)
 
 ```text
-Do only Step 9. Read AGENTS.md, game-profile.md, .agents/skills/gfit-adlc-generate/SKILL.md, and .agents/skills/gfit-adlc-validate/SKILL.md.
+Do only Step 9. Read AGENTS.md and game-profile.md. Use /gfit-adlc-generate and /gfit-adlc-validate.
 Implement only the Intent 2 Plan. Test replay after a win and a loss. Run the regression checks.
 Validate must define proof first and send failures back to Generate. Repeat until the evidence is complete.
 Keep the dependency lock and v1 evidence unless there is a clear need to change them.
@@ -159,7 +152,7 @@ Check the result: Replay keeps the same session_id, creates a new round_id, and 
 ## Step 10A — Govern v2 (10 minutes)
 
 ```text
-Do only Step 10A. Read AGENTS.md, game-profile.md, and .agents/skills/gfit-adlc-govern/SKILL.md.
+Do only Step 10A. Read AGENTS.md and game-profile.md. Use /gfit-adlc-govern.
 Create the Intent 2 decision.md from the current revision and evidence.
 Recommend Approve, Revise, or Stop. Set human_decision to pending. Stop so I can run a smoke test and decide.
 ```
@@ -167,7 +160,7 @@ Recommend Approve, Revise, or Stop. Set human_decision to pending. Stop so I can
 ## Step 10B — Deploy v2 on Your Computer (5 minutes)
 
 ```text
-Do only Step 10B. Read AGENTS.md, game-profile.md, and .agents/skills/gfit-adlc-deploy/SKILL.md.
+Do only Step 10B. Read AGENTS.md and game-profile.md. Use /gfit-adlc-deploy.
 Check that the decision approves the current revision and localhost v2.
 Create release.md. Start v2 with the command in the profile. Check the response and telemetry labels with real results.
 Stop before Observe.
@@ -176,7 +169,7 @@ Stop before Observe.
 ## Step 11 — Observe ↔ Govern and the Next Intent (15 minutes)
 
 ```text
-Do only Step 11. Read AGENTS.md, game-profile.md, .agents/skills/gfit-adlc-observe/SKILL.md, and .agents/skills/gfit-adlc-govern/SKILL.md.
+Do only Step 11. Read AGENTS.md and game-profile.md. Use /gfit-adlc-observe and /gfit-adlc-govern.
 Use telemetry/events.jsonl from real play. Compare v1 and v2 in artifacts/intent-002/observation.md.
 State the source, cutoff time, eligible sample, completion rate, replay rate, and limits. Report INSUFFICIENT EVIDENCE if there is not enough data.
 Use observation.md as the basis for resolution. Do not create data or numbers to replace missing player results.
@@ -188,7 +181,7 @@ Check the result: The formulas and denominators are correct. Test data and real 
 
 ## Stop and Continue Later
 
-Tell the agent, `Stop at this Step.` To continue, copy the full prompt for the next Step. The prompt must name `AGENTS.md`, `game-profile.md`, and the required Skills. You may use local Git commits as an audit trail after you check the diff. Do not commit `.env`, `.venv`, or `telemetry/events.jsonl`.
+Tell the agent, `Stop at this Step.` To continue, copy the full prompt for the next Step. You may use local Git commits as an audit trail after you check the diff. Do not commit `.env`, `.venv`, or `telemetry/events.jsonl`.
 
 ## Completion Checklist
 
