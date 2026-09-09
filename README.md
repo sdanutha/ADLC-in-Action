@@ -12,7 +12,7 @@ Intent → Generate ↔ Validate → Govern → Deploy → Observe
 
 ```text
 AGENTS.md                         General rules and Skill routing
-.agents/skills/gfit-adlc-*/      Six ADLC Skill modes
+.agents/skills/gfit-adlc-*/       Six ADLC Skill modes
 README.md                         Guide for the Core branch
 ```
 
