@@ -1,0 +1,20 @@
+# macOS
+.DS_Store
+
+# Python and uv
+__pycache__/
+*.py[cod]
+.venv/
+
+# Local configuration
+.env
+.env.*
+!.env.example
+
+# Test output
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local runtime telemetry
+telemetry/events.jsonl
