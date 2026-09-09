@@ -28,7 +28,7 @@ The Steps make the workshop easy to follow. Real ADLC work does not need to foll
 - Every agent uses the same project Skills in `.agents/skills/gfit-adlc-*`. You do not need to install the Skill pack for all projects.
 - When a prompt says `Use /gfit-adlc-<mode>`, run that Skill command. If slash commands are unavailable, read `.agents/skills/gfit-adlc-<mode>/SKILL.md` instead.
 
-**Copy the full prompt for each Step.** A short prompt such as `Do Step 3` may not load the needed context.
+**Copy the prompt for each Step.** The agent harness reads the repository instructions and project context.
 
 ## Workshop Workflow
 
@@ -66,11 +66,8 @@ flowchart LR
 ## Step 0 — Check Your Setup (5–10 minutes)
 
 ```text
-I am the first tester for ADLC in Action. Do only Step 0.
-Read AGENTS.md and game-profile.md.
-Use /gfit-adlc-intent, /gfit-adlc-generate, /gfit-adlc-validate, /gfit-adlc-govern, /gfit-adlc-deploy, and /gfit-adlc-observe.
-Check Git, uv, Python 3 or later, file access, and local command access.
-Do not build the game or start the next Step. Report the six Skills and anything missing.
+Do Step 0. Use all six /gfit-adlc-* Skills.
+Check the local setup. Do not build the game. Report anything missing.
 ```
 
 Check the result: The agent found six Skills and there is no `app/` directory yet. If Python is missing, install a Python 3 version supported by uv. No fixed minor version is required.
@@ -78,11 +75,8 @@ Check the result: The agent found six Skills and there is no `app/` directory ye
 ## Step 1 — Intent 1: Finish One Round (10 minutes)
 
 ```text
-Do only Step 1. Read AGENTS.md and game-profile.md. Use /gfit-adlc-intent.
-Use the Game Project Binding to create artifacts/intent-001/intent.md.
-The Intent is for a new player who can start and finish the first round without help.
-Use the Intent 1 target and guardrails from the profile. Keep the hypothesis separate from real evidence.
-Stop so I can review the file. Do not start building the game.
+Do Step 1 with /gfit-adlc-intent.
+Create artifacts/intent-001/intent.md. Stop for review.
 ```
 
 **Govern checkpoint:** Check the metric denominator, the time window, and the limits of a self-test. Then send `Confirm Intent 1 as written`.
@@ -90,11 +84,8 @@ Stop so I can review the file. Do not start building the game.
 ## Step 2 — Generate ↔ Validate: Spec and Plan (15 minutes)
 
 ```text
-Do only Step 2. Read AGENTS.md and game-profile.md. Use /gfit-adlc-generate and /gfit-adlc-validate.
-Read the confirmed Intent 1. Create spec.md and plan.md in artifacts/intent-001/.
-Validate must define the G01–G10 mapping first. Then check the documents and send gaps back to Generate for repair.
-Split the work into game logic, web flow, and telemetry. State the proof for each part.
-Do not write implementation code. Stop so I can review the files.
+Do Step 2 with /gfit-adlc-generate and /gfit-adlc-validate.
+Create the Intent 1 spec and plan. Stop before implementation.
 ```
 
 **Govern checkpoint:** Check the scope, commands, and acceptance mapping. Then send `Approve the Intent 1 Spec and Plan`.
@@ -102,11 +93,8 @@ Do not write implementation code. Stop so I can review the files.
 ## Step 3 — Generate ↔ Validate: Build v1 (25–40 minutes)
 
 ```text
-Do only Step 3. Read AGENTS.md and game-profile.md. Use /gfit-adlc-generate and /gfit-adlc-validate.
-Implement the approved Intent 1 Spec and Plan with the stack and commands in the profile.
-Validate must define behavior proof first. Show a failing test for the expected reason before Generate builds each small part.
-Repeat the feedback loop until G01–G10 have proof. Create the environment and lock files defined in game-profile.md.
-Record real evidence in artifacts/intent-001/validation.md. Stop before Govern.
+Do Step 3 with /gfit-adlc-generate and /gfit-adlc-validate.
+Implement Intent 1 and record validation evidence. Stop before Govern.
 ```
 
 Check the result: Read at least one red and green test record. Then run `uv run pytest -q`.
@@ -114,10 +102,8 @@ Check the result: Read at least one red and green test record. Then run `uv run 
 ## Step 4 — Govern v1 (10 minutes)
 
 ```text
-Do only Step 4. Read AGENTS.md and game-profile.md. Use /gfit-adlc-govern.
-Check the revision against the Intent, Spec, and validation for Intent 1.
-Create artifacts/intent-001/decision.md with an Approve, Revise, or Stop recommendation. Set human_decision to pending.
-Give me a way to open the game with source=test and a short smoke test. Stop so I can test it and decide.
+Do Step 4 with /gfit-adlc-govern.
+Prepare the Intent 1 decision. Stop for my smoke test and decision.
 ```
 
 Try invalid input, a win, a loss, and a page refresh. Then send `Approve localhost v1. Smoke test result: ...` or `Revise: ...`.
@@ -125,10 +111,8 @@ Try invalid input, a win, a loss, and a page refresh. Then send `Approve localho
 ## Step 5 — Deploy v1 on Your Computer (5 minutes)
 
 ```text
-Do only Step 5. Read AGENTS.md and game-profile.md. Use /gfit-adlc-deploy.
-Check that the decision approves the current revision and the localhost target.
-Create artifacts/intent-001/release.md with the revision, start and stop steps, health check, and rollback steps.
-Start the game with the local release command if possible. Do not say it is running until you check a real response.
+Do Step 5 with /gfit-adlc-deploy.
+Release approved Intent 1 locally and verify the response.
 ```
 
 Open [the local game](http://127.0.0.1:8000). Press Ctrl+C to stop it.
@@ -138,11 +122,8 @@ Open [the local game](http://127.0.0.1:8000). Press Ctrl+C to stop it.
 Collect `source=real` sessions without asking players to replay. Wait until the follow-up window ends. If one person runs several self-tests, label them as tests from one person.
 
 ```text
-Do only Step 6. Read AGENTS.md and game-profile.md. Use /gfit-adlc-observe and /gfit-adlc-govern.
-Analyze real v1 telemetry in artifacts/intent-001/observation.md.
-State the source, cutoff time, eligible sample, completion rate, replay rate, and limits. Report INSUFFICIENT EVIDENCE if there is not enough data.
-Create resolution.md with a Resolved, Iterate, or Stop recommendation. Set human_resolution to pending.
-Stop so I can decide. Do not create Intent 2 by yourself.
+Do Step 6 with /gfit-adlc-observe and /gfit-adlc-govern.
+Observe Intent 1 real telemetry and prepare its resolution. Stop for my decision.
 ```
 
 Send `Resolved`, `Iterate`, or `Stop` with a reason. You may choose Iterate to continue the workshop. This choice does not prove that Intent 1 passed.
@@ -150,11 +131,8 @@ Send `Resolved`, `Iterate`, or `Stop` with a reason. You may choose Iterate to c
 ## Step 7 — Intent 2: Start a Second Round (10 minutes)
 
 ```text
-Do only Step 7. Read AGENTS.md and game-profile.md. Use /gfit-adlc-intent.
-Read observation.md and resolution.md for Intent 1.
-Briefly compare a Play again button, difficulty levels, and a score. Use the intervention set in the profile.
-Create artifacts/intent-002/intent.md with the Intent 2 target and guardrails.
-Stop so I can confirm the Intent. Do not change the game.
+Do Step 7 with /gfit-adlc-intent.
+Create artifacts/intent-002/intent.md. Stop for confirmation.
 ```
 
 **Govern checkpoint:** Check that the agent does not treat longer play time as proof of fun. Then send `Confirm Intent 2 as written`.
@@ -162,10 +140,8 @@ Stop so I can confirm the Intent. Do not change the game.
 ## Step 8 — Generate ↔ Validate: v2 Spec and Plan (10 minutes)
 
 ```text
-Do only Step 8. Read AGENTS.md and game-profile.md. Use /gfit-adlc-generate and /gfit-adlc-validate.
-Create spec.md and plan.md in artifacts/intent-002/ from the confirmed Intent.
-Validate must check R01–R03, regression cases G01–G09, and the changed part of G10. Send gaps back to Generate for repair.
-Define the session and round life cycle. Explain how you will keep the baseline. Stop before implementation.
+Do Step 8 with /gfit-adlc-generate and /gfit-adlc-validate.
+Create the Intent 2 spec and plan. Stop before implementation.
 ```
 
 **Govern checkpoint:** Check that the plan has no extra features. Then send `Approve the Intent 2 Spec and Plan`.
@@ -173,11 +149,8 @@ Define the session and round life cycle. Explain how you will keep the baseline.
 ## Step 9 — Generate ↔ Validate: Build v2 (20–30 minutes)
 
 ```text
-Do only Step 9. Read AGENTS.md and game-profile.md. Use /gfit-adlc-generate and /gfit-adlc-validate.
-Implement only the Intent 2 Plan. Test replay after a win and a loss. Run the regression checks.
-Validate must define proof first and send failures back to Generate. Repeat until the evidence is complete.
-Keep the dependency lock and v1 evidence unless there is a clear need to change them.
-Record real results in artifacts/intent-002/validation.md. Stop before Govern.
+Do Step 9 with /gfit-adlc-generate and /gfit-adlc-validate.
+Implement Intent 2 and record validation evidence. Stop before Govern.
 ```
 
 Check the result: Replay keeps the same session_id, creates a new round_id, and does not change old v1 labels.
@@ -185,36 +158,29 @@ Check the result: Replay keeps the same session_id, creates a new round_id, and 
 ## Step 10A — Govern v2 (10 minutes)
 
 ```text
-Do only Step 10A. Read AGENTS.md and game-profile.md. Use /gfit-adlc-govern.
-Create the Intent 2 decision.md from the current revision and evidence.
-Recommend Approve, Revise, or Stop. Set human_decision to pending. Stop so I can run a smoke test and decide.
+Do Step 10A with /gfit-adlc-govern.
+Prepare the Intent 2 decision. Stop for my smoke test and decision.
 ```
 
 ## Step 10B — Deploy v2 on Your Computer (5 minutes)
 
 ```text
-Do only Step 10B. Read AGENTS.md and game-profile.md. Use /gfit-adlc-deploy.
-Check that the decision approves the current revision and localhost v2.
-Create release.md. Start v2 with the command in the profile. Check the response and telemetry labels with real results.
-Stop before Observe.
+Do Step 10B with /gfit-adlc-deploy.
+Release approved Intent 2 locally and verify telemetry. Stop before Observe.
 ```
 
 ## Step 11 — Observe ↔ Govern and the Next Intent (15 minutes)
 
 ```text
-Do only Step 11. Read AGENTS.md and game-profile.md. Use /gfit-adlc-observe and /gfit-adlc-govern.
-Use telemetry/events.jsonl from real play. Compare v1 and v2 in artifacts/intent-002/observation.md.
-State the source, cutoff time, eligible sample, completion rate, replay rate, and limits. Report INSUFFICIENT EVIDENCE if there is not enough data.
-Use observation.md as the basis for resolution. Do not create data or numbers to replace missing player results.
-Create resolution.md with a recommendation. Set human_resolution to pending.
-Stop so I can decide. You may suggest the next Intent, but do not create or implement it by yourself.
+Do Step 11 with /gfit-adlc-observe and /gfit-adlc-govern.
+Compare Intent 1 and Intent 2 real telemetry. Prepare the resolution and stop for my decision.
 ```
 
 Check the result: The formulas and denominators are correct. Test data and real data are separate. The agent does not say the Intent passed when evidence is weak or a guardrail failed.
 
 ## Stop and Continue Later
 
-Tell the agent, `Stop at this Step.` To continue, copy the full prompt for the next Step. You may use local Git commits as an audit trail after you check the diff. Do not commit `.env`, `.venv`, or `telemetry/events.jsonl`.
+Tell the agent, `Stop at this Step.` To continue, copy the prompt for the next Step. You may use local Git commits as an audit trail after you check the diff. Do not commit `.env`, `.venv`, or `telemetry/events.jsonl`.
 
 ## Completion Checklist
 
