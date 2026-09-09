@@ -30,6 +30,39 @@ The Steps make the workshop easy to follow. Real ADLC work does not need to foll
 
 **Copy the full prompt for each Step.** A short prompt such as `Do Step 3` may not load the needed context.
 
+## Workshop Workflow
+
+This is the route through the workshop. Generate and Validate work together. A human makes each Govern decision.
+
+```mermaid
+flowchart LR
+    S0["Step 0<br/>Setup"] --> I1["Step 1<br/>Intent 1"]
+    I1 --> G1["Steps 2–3<br/>Generate"]
+    G1 <--> V1["Steps 2–3<br/>Validate"]
+    V1 --> H1["Step 4<br/>Govern"]
+    H1 --> D1["Step 5<br/>Deploy"]
+    D1 --> O1["Step 6<br/>Observe"]
+    O1 --> I2["Step 7<br/>Intent 2"]
+    I2 --> G2["Steps 8–9<br/>Generate"]
+    G2 <--> V2["Steps 8–9<br/>Validate"]
+    V2 --> H2["Step 10A<br/>Govern"]
+    H2 --> D2["Step 10B<br/>Deploy"]
+    D2 --> O2["Step 11<br/>Observe"]
+    O2 --> N["Next Intent"]
+
+    classDef intent fill:#dbeafe,stroke:#2563eb,color:#1e3a8a
+    classDef work fill:#dcfce7,stroke:#16a34a,color:#14532d
+    classDef decision fill:#fef3c7,stroke:#d97706,color:#78350f
+    classDef release fill:#f3e8ff,stroke:#9333ea,color:#581c87
+    classDef observe fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
+
+    class I1,I2,N intent
+    class G1,V1,G2,V2 work
+    class H1,H2 decision
+    class D1,D2 release
+    class O1,O2 observe
+```
+
 ## Step 0 — Check Your Setup (5–10 minutes)
 
 ```text
