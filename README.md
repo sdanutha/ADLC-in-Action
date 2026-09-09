@@ -76,7 +76,7 @@ Check the result: The agent found six Skills and there is no `app/` directory ye
 
 ```text
 Do Step 1 with /gfit-adlc-intent.
-Create artifacts/intent-001/intent.md. Stop for review.
+Create artifacts/intent-001/intent.html. Stop for review.
 ```
 
 **Govern checkpoint:** Check the metric denominator, the time window, and the limits of a self-test. Then send `Confirm Intent 1 as written`.
@@ -132,7 +132,7 @@ Send `Resolved`, `Iterate`, or `Stop` with a reason. You may choose Iterate to c
 
 ```text
 Do Step 7 with /gfit-adlc-intent.
-Create artifacts/intent-002/intent.md. Stop for confirmation.
+Create artifacts/intent-002/intent.html. Stop for confirmation.
 ```
 
 **Govern checkpoint:** Check that the agent does not treat longer play time as proof of fun. Then send `Confirm Intent 2 as written`.
@@ -190,4 +190,4 @@ Tell the agent, `Stop at this Step.` To continue, copy the prompt for the next S
 - [ ] No one made up test results, release approval, or player data.
 - [ ] You can explain how Generate and Validate work together and how Observe sends a signal back to Intent.
 
-Record feedback in `artifacts/pilot-notes.md`. Include the agent or model, blocked Step, time used, prompt changes, and any result that was different from the expected result. Do not include account data or personal data.
+Record feedback in `artifacts/pilot-notes.html`. Include the agent or model, blocked Step, time used, prompt changes, and any result that was different from the expected result. Do not include account data or personal data.

@@ -44,6 +44,28 @@ Always keep technical validation separate from outcome observation.
 - Runtime telemetry: `telemetry/events.jsonl`
 - Bind only to loopback. Do not use Node, custom JavaScript, a database, an LLM API, a paid service, public hosting, remote deployment, remote push, or global configuration changes.
 
+## HTML Artifact Contract
+
+Use standalone HTML for every review artifact in this workshop. Do not create Markdown artifact output. Open each file directly in a browser; no build tool, external stylesheet, CDN, or JavaScript is needed.
+
+Each Intent folder uses these names:
+
+- `index.html` — links to the available artifacts and shows their current status
+- `intent.html`, `spec.html`, `plan.html`, `validation.html`
+- `decision.html`, `release.html`, `observation.html`, `resolution.html`
+
+Record workshop feedback in `artifacts/pilot-notes.html`.
+
+Each artifact must use semantic, line-oriented HTML that remains easy for an agent to edit and a reviewer to diff. Include:
+
+- a clear title, Intent ID, status, revision or date, and a link to `index.html`
+- a short summary before the detail
+- headings, lists, tables, and code blocks where they help review
+- actual evidence only, with `NOT RUN` or `INSUFFICIENT EVIDENCE` where needed
+- links to related HTML artifacts; preserve earlier evidence instead of replacing it
+
+Use simple inline CSS for readable type, spacing, tables, code blocks, and status labels. HTML format improves review; it does not change the required content, evidence rules, or human decision points.
+
 ## Game Contract
 
 - The home page has a short guide and a `Start game` button. All user text is in English.
